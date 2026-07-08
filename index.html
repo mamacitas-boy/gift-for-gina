@@ -40,8 +40,13 @@ p{
     margin-bottom:20px;
 }
 .buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    height:60px;
     position:relative;
-    height:90px;
+    width:100%;
 }
 button{
     border:none;
@@ -50,6 +55,8 @@ button{
     padding:16px 35px;
     font-size:22px;
     transition:.25s;
+    position:relative;
+    z-index:10;
 }
 #yes{
     background:#ff2d7a;
@@ -60,9 +67,7 @@ button{
     transform:scale(0.92);
 }
 #no{
-    position:absolute;
     background:#ddd;
-    left:210px;
 }
 .heart{
     position:fixed;
@@ -123,7 +128,6 @@ h.className="heart";
 let img=document.createElement("img");
 img.src="https://emojigraph.org/media/72/apple/growing-heart_1f497.png";
 h.appendChild(img);
-
 // Random values for each heart
 let startX=Math.random()*window.innerWidth;
 let startY=window.innerHeight;
@@ -134,10 +138,8 @@ let delay=Math.random()*0.5;
 let rotation=Math.random()*720;
 let scale=0.8+Math.random()*0.7;
 let driftX=(Math.random()-0.5)*200;
-
 h.style.left=startX+"px";
 h.style.top=startY+"px";
-
 // Create unique keyframes for this heart
 let keyframeName=`fly${i}`;
 let keyframes=`
@@ -152,16 +154,13 @@ opacity:0;
 }
 }
 `;
-
 // Add keyframes to head
 let style=document.createElement("style");
 style.innerHTML=keyframes;
 document.head.appendChild(style);
-
 // Apply animation
 h.style.animation=`${keyframeName} ${duration}s ease-out forwards`;
 h.style.animationDelay=delay+"s";
-
 document.body.appendChild(h);
 }
 }
