@@ -16,8 +16,21 @@ body{
     justify-content:center;
     align-items:center;
     height:100vh;
-    background:linear-gradient(135deg,#ffd6e7,#ffeef6);
+    background:linear-gradient(-45deg, #8b4fbf, #c39bd3, #6c3483, #d7bde2);
+    background-size:400% 400%;
+    animation:gradientShift 8s ease infinite;
     overflow:hidden;
+}
+@keyframes gradientShift{
+0%{
+background-position:0% 50%;
+}
+50%{
+background-position:100% 50%;
+}
+100%{
+background-position:0% 50%;
+}
 }
 .card{
     background:white;
@@ -33,7 +46,7 @@ img{
 }
 h1{
     margin:15px 0 10px;
-    color:#ff2d7a;
+    color:#8b4fbf;
 }
 p{
     color:#666;
@@ -59,7 +72,7 @@ button{
     z-index:10;
 }
 #yes{
-    background:#ff2d7a;
+    background:#8b4fbf;
     color:white;
     transform:scale(0.85);
 }
@@ -112,13 +125,26 @@ display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-background:linear-gradient(135deg,#ffd6e7,#ffeef6);
+background:linear-gradient(-45deg, #8b4fbf, #c39bd3, #6c3483, #d7bde2);
+background-size:400% 400%;
+animation:gradientShift 8s ease infinite;
 flex-direction:column;
 font-family:Arial;
 text-align:center;
+}
+@keyframes gradientShift{
+0%{
+background-position:0% 50%;
+}
+50%{
+background-position:100% 50%;
+}
+100%{
+background-position:0% 50%;
+}
 ">
 <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dml5enp5dzFjMHBjZjh0NnoxMnltYXBza2ZhMDdweDJheXFzNThkeiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jBupZrapLgk6mvlvmm/giphy.gif" style="width:300px;border-radius:18px;margin-bottom:20px;">
-<h1 style="font-size:60px;color:#ff2d7a;">I KNEW ITTT YAYYYY! 💖</h1>
+<h1 style="font-size:60px;color:#8b4fbf;">I KNEW ITTT YAYYYY! 💖</h1>
 <h2>You're the bestttt GIRL EVERRRR 🥹❤️</h2>
 </div>
 `;
