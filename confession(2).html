@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be Mine? 💖</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg,#ffd6e7,#ffeef6);
+    overflow:hidden;
+}
+.card{
+    background:white;
+    padding:20px;
+    border-radius:25px;
+    width:360px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.15);
+}
+img{
+    width:100%;
+    border-radius:18px;
+}
+h1{
+    margin:15px 0 10px;
+    color:#ff2d7a;
+}
+p{
+    color:#666;
+    margin-bottom:20px;
+}
+.buttons{
+    position:relative;
+    height:90px;
+}
+button{
+    border:none;
+    cursor:pointer;
+    border-radius:40px;
+    padding:16px 35px;
+    font-size:22px;
+    transition:.25s;
+}
+#yes{
+    background:#ff2d7a;
+    color:white;
+    transform:scale(0.85);
+}
+#yes:hover{
+    transform:scale(0.92);
+}
+#no{
+    position:absolute;
+    background:#ddd;
+    left:210px;
+}
+.heart{
+    position:fixed;
+    font-size:30px;
+}
+.heart img{
+    width:40px;
+    height:40px;
+    border-radius:0;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExamdidWc5amlmZ3A0d2o3Y29ld3o3Njg2d2xjNWQzaGxkbG9rOWM2aCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/BNlSrpW0e4nbgVZ2we/giphy.gif">
+<h1>Will you be mine? 💕</h1>
+<p>asked by someone who loves you so much ❤️</p>
+<div class="buttons">
+<button id="yes">Yes 💖</button>
+<button id="no">No</button>
+</div>
+</div>
+<script>
+const no=document.getElementById("no");
+const yes=document.getElementById("yes");
+let size=1;
+no.addEventListener("mouseover",move);
+no.addEventListener("click",move);
+function move(){
+const x=Math.random()*(window.innerWidth-120);
+const y=Math.random()*(window.innerHeight-70);
+no.style.position="fixed";
+no.style.left=x+"px";
+no.style.top=y+"px";
+size+=0.15;
+yes.style.transform=`scale(${size})`;
+}
+yes.onclick=function(){
+document.body.innerHTML=`
+<div style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:linear-gradient(135deg,#ffd6e7,#ffeef6);
+flex-direction:column;
+font-family:Arial;
+text-align:center;
+">
+<img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dml5enp5dzFjMHBjZjh0NnoxMnltYXBza2ZhMDdweDJheXFzNThkeiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jBupZrapLgk6mvlvmm/giphy.gif" style="width:300px;border-radius:18px;margin-bottom:20px;">
+<h1 style="font-size:60px;color:#ff2d7a;">YAYYY!! 💖</h1>
+<h2>Now you're officially my girlfriend 🥹❤️</h2>
+</div>
+`;
+for(let i=0;i<200;i++){
+let h=document.createElement("div");
+h.className="heart";
+let img=document.createElement("img");
+img.src="https://emojigraph.org/media/72/apple/growing-heart_1f497.png";
+h.appendChild(img);
+
+// Random values for each heart
+let startX=Math.random()*window.innerWidth;
+let startY=window.innerHeight;
+let endY=-Math.random()*600-300;
+let endX=startX+(Math.random()-0.5)*400;
+let duration=2+Math.random()*2;
+let delay=Math.random()*0.5;
+let rotation=Math.random()*720;
+let scale=0.8+Math.random()*0.7;
+let driftX=(Math.random()-0.5)*200;
+
+h.style.left=startX+"px";
+h.style.top=startY+"px";
+
+// Create unique keyframes for this heart
+let keyframeName=`fly${i}`;
+let keyframes=`
+@keyframes ${keyframeName}{
+from{
+transform:translateX(0) translateY(0) scale(1) rotateZ(0deg);
+opacity:1;
+}
+to{
+transform:translateX(${driftX}px) translateY(${endY}px) scale(${scale}) rotateZ(${rotation}deg);
+opacity:0;
+}
+}
+`;
+
+// Add keyframes to head
+let style=document.createElement("style");
+style.innerHTML=keyframes;
+document.head.appendChild(style);
+
+// Apply animation
+h.style.animation=`${keyframeName} ${duration}s ease-out forwards`;
+h.style.animationDelay=delay+"s";
+
+document.body.appendChild(h);
+}
+}
+</script>
+</body>
+</html>
