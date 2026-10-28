@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#131716" />
+    <meta name="description" content="Roomscape — a four-wall 3D room editor." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>Roomscape — 3D room editor</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="scene" aria-label="Interactive four-wall 3D room">
+        <div id="webgl-layer"></div>
+        <div id="css3d-layer"></div>
+      </div>
+
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Roomscape home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>ROOMSCAPE</span>
+        </a>
+        <div class="topbar-meta"><span class="live-dot" aria-hidden="true"></span><span>360° ENVIRONMENT</span></div>
+      </header>
+
+      <button id="settings-toggle" class="settings-toggle" type="button" aria-expanded="true" aria-controls="settings-panel">
+        <span class="settings-icon" aria-hidden="true">☷</span>
+        <span>Settings</span>
+      </button>
+
+      <aside id="settings-panel" class="settings-panel is-open" aria-label="Room settings">
+        <div class="settings-header">
+          <div>
+            <p class="eyebrow"><span>01</span> Control room</p>
+            <h1>Settings</h1>
+          </div>
+          <button id="settings-close" class="close-button" type="button" aria-label="Close settings">×</button>
+        </div>
+
+        <div class="mode-tabs" role="tablist" aria-label="Editor mode">
+          <button class="mode-tab is-active" type="button" role="tab" aria-selected="true" data-mode="view">View mode</button>
+          <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="edit">Edit mode</button>
+        </div>
+
+        <div id="view-controls" class="settings-section" role="tabpanel">
+          <div class="section-heading"><span>Explore</span><span class="section-index">VIEW</span></div>
+          <p class="section-help">Drag or swipe anywhere in the room to spin through a full 360°. The camera stays safely inside the architecture.</p>
+          <button id="reset-view" class="secondary-button" type="button"><span>Recenter camera</span><span aria-hidden="true">↺</span></button>
+          <div class="range-row"><label for="view-sensitivity">Orbit sensitivity</label><output id="view-sensitivity-value" for="view-sensitivity">0.42</output><input id="view-sensitivity" type="range" min="0.15" max="0.9" step="0.01" value="0.42" /></div>
+          <div class="switch-row"><label for="show-labels">Show surface labels</label><input id="show-labels" type="checkbox" checked /></div>
+        </div>
+
+        <div id="edit-controls" class="settings-section is-hidden" role="tabpanel" aria-hidden="true">
+          <div class="section-heading"><span>Build your room</span><span class="section-index">EDIT</span></div>
+
+          <form id="content-form" class="editor-form">
+            <div class="segmented-control" role="group" aria-label="Content type">
+              <button class="type-button is-active" type="button" data-content-type="text">Text</button>
+              <button class="type-button" type="button" data-content-type="image">Image</button>
+            </div>
+
+            <div id="text-fields" class="content-fields">
+              <label for="text-input">Message</label>
+              <input id="text-input" type="text" maxlength="88" placeholder="Write a note for the room..." />
+            </div>
+
+            <div id="image-fields" class="content-fields is-hidden">
+              <label for="image-file">Upload an image</label>
+              <input id="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" />
+              <label for="image-url">Or paste an image URL</label>
+              <input id="image-url" type="url" placeholder="https://example.com/image.jpg" />
+              <div id="drop-zone" class="drop-zone" tabindex="0">Drop an image here</div>
+              <p class="field-hint">Local images are embedded into exported configs. Maximum 8 MB.</p>
+            </div>
+
+            <div class="two-column-fields">
+              <div><label for="content-surface">Surface</label><select id="content-surface"><option value="front">Front wall</option><option value="back">Back wall</option><option value="left">Left wall</option><option value="right">Right wall</option><option value="ceiling">Ceiling</option></select></div>
+              <div><label for="content-width">Width</label><input id="content-width" type="range" min="1.2" max="5" step="0.1" value="2.8" /><output id="content-width-value" for="content-width">2.8m</output></div>
+            </div>
+
+            <button class="primary-button" type="submit"><span>Place in room</span><span aria-hidden="true">↗</span></button>
+            <p id="editor-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="editor-divider"></div>
+          <div class="section-heading"><span>Selected object</span><span id="selected-name" class="section-index">NONE</span></div>
+          <div id="transform-controls" class="transform-controls is-disabled" aria-disabled="true">
+            <div class="range-row"><label for="position-x">Horizontal position</label><output id="position-x-value" for="position-x">0.0m</output><input id="position-x" type="range" min="-5" max="5" step="0.05" value="0" disabled /></div>
+            <div class="range-row"><label for="position-y">Vertical position</label><output id="position-y-value" for="position-y">2.2m</output><input id="position-y" type="range" min="0.4" max="4.3" step="0.05" value="2.2" disabled /></div>
+            <div class="range-row"><label for="rotation">Rotation</label><output id="rotation-value" for="rotation">0°</output><input id="rotation" type="range" min="-180" max="180" step="1" value="0" disabled /></div>
+            <div class="range-row"><label for="scale">Scale</label><output id="scale-value" for="scale">1.00×</output><input id="scale" type="range" min="0.45" max="1.8" step="0.01" value="1" disabled /></div>
+            <div class="range-row image-only-control"><label for="opacity">Opacity</label><output id="opacity-value" for="opacity">100%</output><input id="opacity" type="range" min="0.2" max="1" step="0.01" value="1" disabled /></div>
+            <div class="nudge-row"><button class="nudge-button" type="button" data-nudge="left" disabled>←</button><button class="nudge-button" type="button" data-nudge="up" disabled>↑</button><button class="nudge-button" type="button" data-nudge="down" disabled>↓</button><button class="nudge-button" type="button" data-nudge="right" disabled>→</button></div>
+            <div class="object-actions"><button id="duplicate-object" class="secondary-button" type="button" disabled>Duplicate</button><button id="delete-object" class="danger-button" type="button" disabled>Delete</button></div>
+          </div>
+
+          <div class="editor-divider"></div>
+          <div class="section-heading"><span>Room appearance</span><span class="section-index">LIVE</span></div>
+          <div class="color-grid"><label>Walls <input id="wall-color" type="color" value="#b8b0a5" /></label><label>Floor <input id="floor-color" type="color" value="#5f625d" /></label><label>Ceiling <input id="ceiling-color" type="color" value="#d1c8bb" /></label><label>Backdrop <input id="background-color" type="color" value="#131716" /></label></div>
+          <div class="range-row"><label for="room-width">Room width</label><output id="room-width-value" for="room-width">9.2m</output><input id="room-width" type="range" min="6.5" max="13" step="0.1" value="9.2" /></div>
+          <div class="range-row"><label for="room-depth">Room depth</label><output id="room-depth-value" for="room-depth">9.0m</output><input id="room-depth" type="range" min="6.5" max="13" step="0.1" value="9" /></div>
+          <div class="range-row"><label for="room-height">Room height</label><output id="room-height-value" for="room-height">5.0m</output><input id="room-height" type="range" min="3.8" max="7" step="0.1" value="5" /></div>
+          <div class="range-row"><label for="key-light">Key light</label><output id="key-light-value" for="key-light">3.1</output><input id="key-light" type="range" min="0.5" max="5" step="0.1" value="3.1" /></div>
+
+          <div class="editor-divider"></div>
+          <div class="section-heading"><span>Objects in room</span><span id="object-count" class="section-index">0</span></div>
+          <div id="content-list" class="content-list" aria-live="polite"></div>
+          <div class="config-actions"><button id="export-config" class="secondary-button" type="button">Export .config</button><label class="secondary-button import-button" for="import-config">Import .config<input id="import-config" type="file" accept="application/json,.config,.json" /></label></div>
+        </div>
+
+        <p id="global-feedback" class="global-feedback" role="status" aria-live="polite"></p>
+      </aside>
+
+      <div class="scene-caption"><span class="caption-rule"></span><span>FULL ROOM / 05 SURFACES</span></div>
+      <footer class="footer-note"><span>THREE.JS / CSS3DRENDERER</span><span>VIEW · EDIT · EXPORT</span></footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
